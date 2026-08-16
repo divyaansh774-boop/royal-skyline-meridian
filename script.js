@@ -184,6 +184,40 @@ document.querySelectorAll('.package').forEach((card, index) => {
   if (title) title.textContent = detail.title;
 });
 
+// India is much bigger than any one destination. This directory covers every
+// state and union territory, with each choice leading into a bespoke enquiry.
+const indiaRegions = [
+  { name: 'North & Himalayas', places: [['Haryana', 'State'], ['Himachal Pradesh', 'State'], ['Punjab', 'State'], ['Uttar Pradesh', 'State'], ['Uttarakhand', 'State'], ['Chandigarh', 'Union territory'], ['Delhi', 'Union territory'], ['Jammu & Kashmir', 'Union territory'], ['Ladakh', 'Union territory']] },
+  { name: 'West & Desert', places: [['Goa', 'State'], ['Gujarat', 'State'], ['Maharashtra', 'State'], ['Rajasthan', 'State'], ['Dadra & Nagar Haveli and Daman & Diu', 'Union territory']] },
+  { name: 'Central India', places: [['Chhattisgarh', 'State'], ['Madhya Pradesh', 'State']] },
+  { name: 'South India & Islands', places: [['Andhra Pradesh', 'State'], ['Karnataka', 'State'], ['Kerala', 'State'], ['Tamil Nadu', 'State'], ['Telangana', 'State'], ['Lakshadweep', 'Union territory'], ['Puducherry', 'Union territory'], ['Andaman & Nicobar Islands', 'Union territory']] },
+  { name: 'East India', places: [['Bihar', 'State'], ['Jharkhand', 'State'], ['Odisha', 'State'], ['West Bengal', 'State']] },
+  { name: 'Northeast India', places: [['Arunachal Pradesh', 'State'], ['Assam', 'State'], ['Manipur', 'State'], ['Meghalaya', 'State'], ['Mizoram', 'State'], ['Nagaland', 'State'], ['Sikkim', 'State'], ['Tripura', 'State']] }
+];
+
+const directoryGrid = document.querySelector('#india-directory-grid');
+if (directoryGrid) {
+  const directoryStyle = document.createElement('style');
+  directoryStyle.textContent = `.india-directory{background:#f5f9fd}.directory-intro{max-width:620px;margin:-18px 0 38px;color:#496179;font-size:16px;line-height:1.7}.india-directory-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.state-region{background:#fff;border:1px solid #dce8f3;padding:24px;box-shadow:0 8px 22px rgba(11,58,104,.05)}.state-region h3{font:700 23px var(--serif);margin:0 0 4px}.state-region>p{margin:0 0 16px;color:#668096;font-size:11px;text-transform:uppercase;letter-spacing:.13em;font-weight:700}.state-list{display:flex;flex-wrap:wrap;gap:8px}.state-pill{appearance:none;border:1px solid #cadceb;background:#fff;color:var(--ink);padding:8px 10px;text-align:left;border-radius:2px;font-size:12px;line-height:1.25;transition:background .2s,border-color .2s,color .2s,transform .2s}.state-pill:hover,.state-pill:focus-visible{border-color:var(--blue);background:var(--blue);color:#fff;transform:translateY(-1px);outline:none}.state-pill .state-type{display:block;margin-top:3px;font-size:9px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}@media(max-width:980px){.india-directory-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:600px){.india-directory-grid{grid-template-columns:1fr}.state-region{padding:20px}.directory-intro{font-size:15px}}`;
+  document.head.append(directoryStyle);
+
+  indiaRegions.forEach(region => {
+    const group = document.createElement('article');
+    group.className = 'state-region';
+    const title = document.createElement('h3'); title.textContent = region.name;
+    const label = document.createElement('p'); label.textContent = `${region.places.length} places to explore`;
+    const list = document.createElement('div'); list.className = 'state-list';
+    region.places.forEach(([place, type]) => {
+      const button = document.createElement('button');
+      button.type = 'button'; button.className = 'state-pill';
+      button.innerHTML = `${place}<span class="state-type">${type}</span>`;
+      button.addEventListener('click', () => { bookingTrip.value = `${place} — bespoke India journey`; modal.showModal(); });
+      list.append(button);
+    });
+    group.append(title, label, list); directoryGrid.append(group);
+  });
+}
+
 // Complete the enquiry form with contact and country details.
 const enquiry = document.querySelector('#contact-form');
 if (enquiry) {
