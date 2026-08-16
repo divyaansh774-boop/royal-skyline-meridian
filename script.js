@@ -218,6 +218,50 @@ if (directoryGrid) {
   });
 }
 
+// Keep search, results and package selection together on the homepage.
+let unifiedPriceState = null;
+function updateUnifiedPricing() {
+  if (!unifiedPriceState) return;
+  const { panel, travellers } = unifiedPriceState;
+  const count = Number(travellers.value);
+  const journey = 3350 * count;
+  const tax = journey * 0.09;
+  panel.querySelector('[data-unified="journey"]').textContent = localPrice(journey);
+  panel.querySelector('[data-unified="tax"]').textContent = localPrice(tax);
+  panel.querySelector('[data-unified="total"]').textContent = localPrice(journey + tax);
+}
+
+function showUnifiedResults(search) {
+  let experience = document.querySelector('#booking-experience');
+  if (!experience) {
+    experience = document.createElement('section');
+    experience.id = 'booking-experience';
+    experience.className = 'booking-experience section-pad';
+    document.querySelector('.journey-finder').after(experience);
+    const style = document.createElement('style');
+    style.textContent = `.booking-experience{background:#f8f3eb;padding-top:70px;padding-bottom:80px}.booking-experience[hidden]{display:none}.unified-results-head{display:flex;justify-content:space-between;gap:25px;align-items:end;margin-bottom:30px}.unified-results-head h2,.unified-detail h2{font:700 clamp(34px,4vw,56px)/1.05 var(--serif);margin:0}.unified-results-head p{color:#5c7168;margin:10px 0 0}.unified-change{border:1px solid #bcae98;background:#fff;color:#173f37;padding:10px 13px;font-size:12px;font-weight:700}.unified-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:24px}.unified-filters,.unified-card,.unified-detail{background:#fff;border:1px solid #e6dac9}.unified-filters{padding:20px;height:max-content}.unified-filters h3{font:700 21px var(--serif);margin:0 0 15px}.unified-filters label{display:block;font-size:12px;margin:11px 0}.unified-filters input{accent-color:#173f37}.unified-card{display:grid;grid-template-columns:235px 1fr;margin-bottom:16px;overflow:hidden}.unified-card img{width:100%;height:100%;min-height:215px;object-fit:cover}.unified-card-copy{padding:21px}.unified-card h3{font:700 27px var(--serif);margin:4px 0}.unified-card p{font-size:13px;color:#5b7067;margin:9px 0}.unified-badge{display:inline-block;background:#e9f0e9;padding:5px 8px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase}.unified-card-bottom{display:flex;justify-content:space-between;align-items:end;gap:16px;margin-top:17px}.unified-card-price{font:700 23px var(--serif);display:block}.unified-view,.unified-book{border:0;background:#173f37;color:#fff;padding:12px 15px;font-size:12px;font-weight:700}.unified-detail{padding:clamp(24px,4vw,48px);margin-top:24px}.unified-detail[hidden]{display:none}.unified-back{border:0;background:transparent;color:#a95e31;padding:0;font-size:12px;font-weight:700;margin-bottom:18px}.unified-detail-grid{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:45px}.unified-day{padding:14px 0;border-top:1px solid #e5dac9}.unified-day summary{cursor:pointer;font:700 19px var(--serif);list-style:none}.unified-day summary:after{content:'+';float:right;color:#a95e31}.unified-day[open] summary:after{content:'–'}.unified-day p{color:#5a6e65;font-size:14px;line-height:1.7}.unified-price-panel{position:sticky;top:16px;height:max-content;background:#173f37;color:#fff;padding:23px}.unified-price-panel h3{font:700 30px var(--serif);margin:4px 0 17px}.unified-price-panel label{display:block;font-size:11px;font-weight:700;margin-top:18px}.unified-price-panel select{width:100%;padding:10px;margin-top:6px}.unified-price-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.18);font-size:13px}.unified-price-row.total{font-size:17px;font-weight:700;border:0}.unified-book{background:#d6ac65;color:#173f37;width:100%;margin-top:16px}@media(max-width:780px){.unified-layout,.unified-detail-grid{grid-template-columns:1fr}.unified-card{grid-template-columns:1fr}.unified-card img{height:220px}.unified-filters{display:flex;gap:13px;flex-wrap:wrap}.unified-filters h3{width:100%;margin:0}.unified-price-panel{position:static}.unified-results-head{align-items:start;flex-direction:column}}`;
+    document.head.append(style);
+  }
+  experience.hidden = false;
+  experience.innerHTML = `<div class="unified-results-head"><div><p class="eyebrow">Your travel shortlist</p><h2>Journeys matched for you.</h2><p id="unified-search-summary"></p></div><button class="unified-change" type="button">Change search</button></div><div class="unified-layout"><aside class="unified-filters"><h3>Refine your trip</h3><label><input type="checkbox"> Private guide</label><label><input type="checkbox"> Boutique stays</label><label><input type="checkbox"> Wildlife & nature</label><label><input type="checkbox"> 7–10 nights</label></aside><div><article class="unified-card"><img src="https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=900&q=85" alt="Hawa Mahal in Jaipur"><div class="unified-card-copy"><span class="unified-badge">Rajasthan · 7 nights</span><h3>Golden Cities & Blue Skies</h3><p>Jaipur · Jodhpur · Udaipur · Thar Desert. Private guides, palace stays and a slow, considered route.</p><div class="unified-card-bottom"><div>From <strong class="unified-card-price" data-unified-price="3650"></strong><small>per person</small></div><button type="button" class="unified-view">View itinerary</button></div></div></article><article class="unified-card"><img src="https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=900&q=85" alt="Houseboat on Kerala backwaters"><div class="unified-card-copy"><span class="unified-badge">Kerala · 9 nights</span><h3>The Spice Coast</h3><p>Kochi · Munnar · Kumarakom · Marari. Tea country, quiet water and beautifully paced stays.</p><div class="unified-card-bottom"><div>From <strong class="unified-card-price" data-unified-price="4200"></strong><small>per person</small></div><button type="button" class="unified-view">View itinerary</button></div></div></article><article class="unified-card"><img src="https://images.unsplash.com/photo-1680140979890-101e2798dddf?auto=format&fit=crop&w=900&q=85" alt="Tiger in Ranthambore"><div class="unified-card-copy"><span class="unified-badge">Ranthambore · 6 nights</span><h3>In Search of the Tiger</h3><p>Naturalist-led safari drives, forest lodge stays and time for Rajasthan’s wild landscapes.</p><div class="unified-card-bottom"><div>From <strong class="unified-card-price" data-unified-price="4950"></strong><small>per person</small></div><button type="button" class="unified-view">View itinerary</button></div></div></article></div></div><section class="unified-detail" hidden><button class="unified-back" type="button">← Back to results</button><p class="eyebrow">Rajasthan · 7 nights · Private journey</p><h2>Golden Cities & Blue Skies</h2><div class="unified-detail-grid"><div><details class="unified-day" open><summary>Day 1 · Arrive in Jaipur</summary><p>Private airport welcome, heritage stay and a gentle orientation with your local host.</p></details><details class="unified-day"><summary>Day 2 · Jaipur’s living heritage</summary><p>Amber Fort at first light, a craft walk through the old city and a private dinner.</p></details><details class="unified-day"><summary>Day 3 · Jaipur to Jodhpur</summary><p>Travel west across Rajasthan’s open landscapes before arriving in the Blue City.</p></details><details class="unified-day"><summary>Days 4–7 · Jodhpur, Udaipur & desert</summary><p>Fort stories, lake calm and a desert evening shaped around your pace.</p></details></div><aside class="unified-price-panel"><p class="eyebrow light">Your price</p><h3 data-unified="total"></h3><div class="unified-price-row"><span>Journey</span><strong data-unified="journey"></strong></div><div class="unified-price-row"><span>Estimated taxes</span><strong data-unified="tax"></strong></div><div class="unified-price-row total"><span>Total</span><strong data-unified="total"></strong></div><label>Travellers<select><option value="1">1 traveller</option><option value="2" selected>2 travellers</option><option value="3">3 travellers</option><option value="4">4 travellers</option></select></label><button class="unified-book" type="button">Book this journey →</button></aside></div></section>`;
+  experience.querySelector('#unified-search-summary').textContent = `${search.type} · ${search.from} · departing ${search.date}`;
+  experience.querySelectorAll('[data-unified-price]').forEach(node => { node.textContent = localPrice(Number(node.dataset.unifiedPrice)); });
+  const detail = experience.querySelector('.unified-detail');
+  experience.querySelectorAll('.unified-view').forEach(button => button.addEventListener('click', () => { detail.hidden = false; detail.scrollIntoView({ behavior: 'smooth', block: 'start' }); }));
+  experience.querySelector('.unified-back').addEventListener('click', () => { detail.hidden = true; experience.scrollIntoView({ behavior: 'smooth', block: 'start' }); });
+  experience.querySelector('.unified-change').addEventListener('click', () => document.querySelector('.journey-finder').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  const travellers = experience.querySelector('.unified-price-panel select');
+  unifiedPriceState = { panel: experience.querySelector('.unified-price-panel'), travellers };
+  travellers.addEventListener('change', updateUnifiedPricing);
+  experience.querySelector('.unified-book').addEventListener('click', () => { bookingTrip.value = 'Golden Cities & Blue Skies'; modal.showModal(); });
+  updateUnifiedPricing();
+  experience.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+localCountry.addEventListener('change', () => {
+  document.querySelectorAll('[data-unified-price]').forEach(node => { node.textContent = localPrice(Number(node.dataset.unifiedPrice)); });
+  updateUnifiedPricing();
+});
+
 // Multi-product travel search: a distinct, utility-led interface for flights,
 // stays, tours and cabs that leads into the results experience.
 const finderShell = document.querySelector('.finder-shell');
@@ -236,7 +280,7 @@ if (finderShell) {
     searchForm.innerHTML = `${field(places[0], 'from', places[1])}${second}${field(searchMode === 'Hotels' ? 'Check-in' : 'Departure date', 'date', '2026-10-12', 'date')}${returnField}<button class="booking-submit" type="submit">Search ${searchMode} <span>→</span></button>`;
   }
   finderShell.querySelectorAll('.booking-tab').forEach(tab => tab.addEventListener('click', () => { searchMode = tab.dataset.search; finderShell.querySelectorAll('.booking-tab').forEach(item => item.classList.toggle('is-active', item === tab)); renderSearchFields(); }));
-  searchForm.addEventListener('submit', event => { event.preventDefault(); const data = new FormData(searchForm); const params = new URLSearchParams({ type: searchMode, from: data.get('from'), to: data.get('to'), date: data.get('date') }); window.location.href = `results.html?${params}`; });
+  searchForm.addEventListener('submit', event => { event.preventDefault(); const data = new FormData(searchForm); showUnifiedResults({ type: searchMode, from: data.get('from'), to: data.get('to'), date: data.get('date') }); });
   renderSearchFields();
 }
 
