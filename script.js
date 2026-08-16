@@ -218,6 +218,28 @@ if (directoryGrid) {
   });
 }
 
+// Multi-product travel search: a distinct, utility-led interface for flights,
+// stays, tours and cabs that leads into the results experience.
+const finderShell = document.querySelector('.finder-shell');
+if (finderShell) {
+  const finderStyle = document.createElement('style');
+  finderStyle.textContent = `.booking-tabs{display:flex;gap:22px;border-bottom:1px solid #e4ddd2;overflow:auto}.booking-tab{border:0;border-bottom:3px solid transparent;background:transparent;padding:17px 0 13px;color:#63746e;font-size:12px;font-weight:700;white-space:nowrap}.booking-tab.is-active{color:#173f37;border-color:#b66f3f}.booking-search{display:grid;grid-template-columns:repeat(4,minmax(0,1fr)) auto;gap:0;padding-top:22px}.booking-search label{border-left:1px solid #e4ddd2;padding:0 17px;color:#71827c;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em}.booking-search input,.booking-search select{display:block;width:100%;margin-top:6px;border:0;background:transparent;color:#173f37;font:600 15px var(--serif);outline:0}.booking-search .booking-submit{margin-left:12px;border:0;background:#b66f3f;color:#fff;padding:16px 19px;font-weight:700;white-space:nowrap}.booking-search .booking-submit span{margin-left:8px;font-size:18px}@media(max-width:780px){.booking-search{grid-template-columns:1fr 1fr}.booking-search label:nth-child(odd){border-left:0}.booking-search .booking-submit{margin:15px 0 0;width:max-content}}@media(max-width:480px){.booking-tabs{gap:15px}.booking-search{grid-template-columns:1fr}.booking-search label{border-left:0;border-top:1px solid #e4ddd2;padding:13px 0}.booking-search .booking-submit{width:100%}}`;
+  document.head.append(finderStyle);
+  finderShell.innerHTML = `<div class="booking-tabs" role="tablist" aria-label="Travel search"><button class="booking-tab is-active" type="button" data-search="Tours">Tour packages</button><button class="booking-tab" type="button" data-search="Flights">Flights</button><button class="booking-tab" type="button" data-search="Hotels">Hotels</button><button class="booking-tab" type="button" data-search="Cabs">Cabs</button></div><form class="booking-search" id="booking-search-form"></form>`;
+  const searchForm = finderShell.querySelector('#booking-search-form');
+  let searchMode = 'Tours';
+  const field = (label, name, value, type = 'text') => `<label>${label}<input name="${name}" type="${type}" value="${value}" required></label>`;
+  function renderSearchFields() {
+    const places = searchMode === 'Tours' ? ['Destination', 'India'] : searchMode === 'Hotels' ? ['City or hotel', 'Mumbai'] : ['From', 'Delhi'];
+    const second = searchMode === 'Flights' || searchMode === 'Cabs' ? field('To', 'to', 'Mumbai') : field(searchMode === 'Tours' ? 'Travel style' : 'Guests', searchMode === 'Tours' ? 'to' : 'to', searchMode === 'Tours' ? 'Culture & comfort' : '2 guests');
+    const returnField = searchMode === 'Cabs' ? field('Pickup time', 'return', '10:00') : field(searchMode === 'Hotels' ? 'Check-out' : 'Return date', 'return', '2026-10-20', 'date');
+    searchForm.innerHTML = `${field(places[0], 'from', places[1])}${second}${field(searchMode === 'Hotels' ? 'Check-in' : 'Departure date', 'date', '2026-10-12', 'date')}${returnField}<button class="booking-submit" type="submit">Search ${searchMode} <span>→</span></button>`;
+  }
+  finderShell.querySelectorAll('.booking-tab').forEach(tab => tab.addEventListener('click', () => { searchMode = tab.dataset.search; finderShell.querySelectorAll('.booking-tab').forEach(item => item.classList.toggle('is-active', item === tab)); renderSearchFields(); }));
+  searchForm.addEventListener('submit', event => { event.preventDefault(); const data = new FormData(searchForm); const params = new URLSearchParams({ type: searchMode, from: data.get('from'), to: data.get('to'), date: data.get('date') }); window.location.href = `results.html?${params}`; });
+  renderSearchFields();
+}
+
 // Complete the enquiry form with contact and country details.
 const enquiry = document.querySelector('#contact-form');
 if (enquiry) {
