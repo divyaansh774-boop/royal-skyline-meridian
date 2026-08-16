@@ -78,6 +78,11 @@ function renderTheme(key) {
   document.querySelectorAll('.theme-tab').forEach(tab => { const active = tab.dataset.theme === key; tab.classList.toggle('is-active', active); tab.setAttribute('aria-selected', active); });
 }
 document.querySelectorAll('.theme-tab').forEach(tab => tab.addEventListener('click', () => renderTheme(tab.dataset.theme)));
+document.querySelectorAll('.js-theme-link').forEach(link => link.addEventListener('click', event => {
+  event.preventDefault();
+  renderTheme(link.dataset.theme);
+  document.querySelector('#themes').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}));
 renderTheme('heritage');
 
 const currencies = { US: ['USD', 'en-US', 1], IN: ['INR', 'en-IN', 83.12], GB: ['GBP', 'en-GB', .79], EU: ['EUR', 'de-DE', .92], AE: ['AED', 'en-AE', 3.67], AU: ['AUD', 'en-AU', 1.52], CA: ['CAD', 'en-CA', 1.37], SG: ['SGD', 'en-SG', 1.34] };
