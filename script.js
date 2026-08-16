@@ -64,6 +64,21 @@ const gallery = document.querySelector('#theme-gallery');
 const themeCard = document.createElement('div');
 themeCard.className = 'theme-trip-card';
 gallery.after(themeCard);
+const themeDialog = document.createElement('dialog');
+themeDialog.className = 'destination-dialog';
+themeDialog.setAttribute('aria-label', 'Destination journey preview');
+document.body.append(themeDialog);
+
+function openThemePreview(key) {
+  const theme = themes[key];
+  if (!theme) return;
+  renderTheme(key);
+  themeDialog.innerHTML = `<div class="destination-dialog-inner"><button class="dialog-close" aria-label="Close destination preview">×</button><p class="eyebrow">${theme.kicker}</p><h2>${theme.title}</h2><p>${theme.description}</p><div class="destination-dialog-meta"><span>${theme.route}</span><span>${theme.pace}</span></div><div class="destination-dialog-gallery">${theme.images.slice(0, 3).map(([src, label]) => `<img src="${src}" alt="${label}">`).join('')}</div><button class="button button-blue js-dialog-book">Plan this journey <span>→</span></button></div>`;
+  themeDialog.querySelector('.dialog-close').addEventListener('click', () => themeDialog.close());
+  themeDialog.querySelector('.js-dialog-book').addEventListener('click', () => { themeDialog.close(); bookingTrip.value = theme.kicker; modal.showModal(); });
+  themeDialog.showModal();
+}
+themeDialog.addEventListener('click', event => { if (event.target === themeDialog) themeDialog.close(); });
 function renderTheme(key) {
   const theme = themes[key]; if (!theme || !gallery) return;
   document.querySelector('#theme-kicker').textContent = theme.kicker;
@@ -80,8 +95,7 @@ function renderTheme(key) {
 document.querySelectorAll('.theme-tab').forEach(tab => tab.addEventListener('click', () => renderTheme(tab.dataset.theme)));
 document.querySelectorAll('.js-theme-link').forEach(link => link.addEventListener('click', event => {
   event.preventDefault();
-  renderTheme(link.dataset.theme);
-  document.querySelector('#themes').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  openThemePreview(link.dataset.theme);
 }));
 renderTheme('heritage');
 
