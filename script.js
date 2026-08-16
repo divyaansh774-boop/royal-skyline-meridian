@@ -74,6 +74,19 @@ themes.wellness = {
 themes.mountains = {
   kicker: 'Ladakh / 9 nights', title: 'Monasteries, mountain passes & wide-open silence.', description: 'Ladakh is built around the road: clear high-altitude mornings, quiet monasteries, Pangong’s shifting blues and considered acclimatisation at every step.', hero: 'https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=2200&q=90', feature: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1500&q=85', route: 'Leh · Nubra Valley · Pangong Lake', pace: 'Private driver-guide · Acclimatised route · 9 nights', images: [['https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&w=1200&q=85','Ladakh mountain road'],['https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=900&q=85','Himalayan dawn'],['https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=900&q=85','High valley'],['https://images.unsplash.com/photo-1483347756197-71ef80e95f73?auto=format&fit=crop&w=900&q=85','Ladakh quiet'],['https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=900&q=85','Road to Pangong'],['https://images.unsplash.com/photo-1454496522488-7a8e488e8606?auto=format&fit=crop&w=900&q=85','Above the clouds']] };
 
+Object.assign(themes.heritage, {
+  hero: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=2200&q=90',
+  feature: 'https://d37rmf1ynyg9aw.cloudfront.net/fit-in/1280x1280/data/v4/pois/2221ed9d-2397-4276-8a7a-0de7434da393/resources/127329.jpg',
+  images: [
+    ['https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=85', 'Amber Fort, Jaipur'],
+    ['https://d37rmf1ynyg9aw.cloudfront.net/fit-in/1280x1280/data/v4/pois/2221ed9d-2397-4276-8a7a-0de7434da393/resources/127329.jpg', 'City Palace, Jaipur'],
+    ['https://s7ap1.scene7.com/is/image/incredibleindia/city-palace-udaipur-rajasthan-4-musthead-hero?qlt=82&ts=1742185179842', 'City Palace, Udaipur'],
+    ['https://2.bp.blogspot.com/-31dg5A3dVqw/WcNPY-_FA1I/AAAAAAAAFzA/nCxpfb08X08vofuSYJxV6G2FGHPwAgBkQCK4BGAYYCw/w1200-h630-p-k-no-nu/Mehrangarh-Fort-Aerial-View.jpg', 'Mehrangarh Fort, Jodhpur'],
+    ['https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=900&q=85', 'Hawa Mahal, Jaipur'],
+    ['https://images.unsplash.com/photo-1680140979890-101e2798dddf?auto=format&fit=crop&w=900&q=85', 'Tiger safari, Ranthambore']
+  ]
+});
+
 const gallery = document.querySelector('#theme-gallery');
 const themeCard = document.createElement('div');
 themeCard.className = 'theme-trip-card';
