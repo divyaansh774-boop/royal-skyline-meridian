@@ -19,6 +19,20 @@ document.querySelector('#booking-form').addEventListener('submit', event => {
   event.currentTarget.querySelector('.booking-success').textContent = 'Thank you — your booking request is with our travel designers. We’ll be in touch within one business day.';
   event.currentTarget.reset();
 });
+let finderInterest = 'Private journey';
+document.querySelectorAll('.finder-tab').forEach(tab => tab.addEventListener('click', () => {
+  finderInterest = tab.dataset.interest;
+  document.querySelectorAll('.finder-tab').forEach(item => item.classList.toggle('is-active', item === tab));
+}));
+document.querySelector('#journey-finder-form').addEventListener('submit', event => {
+  event.preventDefault();
+  const data = new FormData(event.currentTarget);
+  bookingTrip.value = `${data.get('destination')} — ${finderInterest}`;
+  const bookingForm = document.querySelector('#booking-form');
+  [...bookingForm.elements.when.options].some(option => { if (option.textContent === data.get('when')) { option.selected = true; return true; } return false; });
+  [...bookingForm.elements.travelers.options].some(option => { if (option.textContent === data.get('travellers')) { option.selected = true; return true; } return false; });
+  modal.showModal();
+});
 document.querySelector('#contact-form').addEventListener('submit', event => {
   event.preventDefault();
   event.currentTarget.querySelector('.form-success').textContent = 'Thank you — we’ll be in touch shortly.';
