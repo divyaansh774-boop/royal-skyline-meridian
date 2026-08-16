@@ -145,6 +145,45 @@ function renderPrices() {
 }
 localCountry.addEventListener('change', renderPrices); renderPrices();
 
+// Keep every featured journey visually and geographically accurate.
+const packageDetails = [
+  {
+    image: 'https://images.unsplash.com/photo-1477587458883-47145ed94245?auto=format&fit=crop&w=1200&q=85',
+    alt: 'Hawa Mahal in Jaipur, Rajasthan',
+    nights: '07 nights · Rajasthan',
+    title: 'Golden Cities & Blue Skies'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1593693397690-362cb9666fc2?auto=format&fit=crop&w=1200&q=85',
+    alt: 'Houseboat on the Kerala backwaters',
+    nights: '09 nights · Kerala',
+    title: 'The Spice Coast'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1680140979890-101e2798dddf?auto=format&fit=crop&w=1200&q=85',
+    alt: 'Bengal tiger in Ranthambore National Park',
+    nights: '06 nights · Ranthambore',
+    title: 'In Search of the Tiger'
+  },
+  {
+    image: 'https://images.unsplash.com/photo-1599661046289-e31897846e41?auto=format&fit=crop&w=1200&q=85',
+    alt: 'Amber Fort in Jaipur, Rajasthan',
+    nights: '25 days · Across India',
+    title: 'Grand India Odyssey'
+  }
+];
+
+document.querySelectorAll('.package').forEach((card, index) => {
+  const detail = packageDetails[index];
+  if (!detail) return;
+  const image = card.querySelector('img');
+  const nights = card.querySelector('div > p');
+  const title = card.querySelector('h3');
+  if (image) { image.src = detail.image; image.alt = detail.alt; }
+  if (nights) nights.textContent = detail.nights;
+  if (title) title.textContent = detail.title;
+});
+
 // Complete the enquiry form with contact and country details.
 const enquiry = document.querySelector('#contact-form');
 if (enquiry) {
